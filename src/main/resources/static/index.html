@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Beadando app</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<form action="/add" method="POST">
+    <p>Create a new Customer!</p>
+
+    <div>
+        <label for="firstName">First name:</label>
+        <input name="first" id="firstName" value="Kristóf">
+    </div>
+    <div>
+        <label for="lastName">Last name:</label>
+        <input name="last" id="lastName" value="Szabó">
+    </div>
+    <div>
+        <label for="age">Age:</label>
+        <input name="age" id="age" value="0">
+    </div>
+    <div>
+        <button>Add customer</button>
+    </div>
+</form>
+
+<form action="/list" method="GET">
+    <button>List customers</button>
+</form>
+
+<form action="/find/id" method="GET">
+    <div>
+        <label>The ID of the Customer you want to find:</label>
+        <input name="id" value=1>
+    </div>
+    <div>
+        <button>Find customer by id</button>
+    </div>
+</form>
+
+
+<form action="/update" method="POST">
+    <p>Update an old customer!</p>
+    <div>
+        <label for="iD">Id:</label>
+        <input name="id" id="iD" value="">
+    </div>
+    <div>
+        <label for="firstName">First name:</label>
+        <input name="first" id="fName" value="">
+    </div>
+    <div>
+        <label for="lastName">Last name:</label>
+        <input name="last" id="lName" value="">
+    </div>
+    <div>
+        <label for="age">Age:</label>
+        <input name="age" id="age1" value="0">
+    </div>
+    <div>
+        <button>Update customer</button>
+    </div>
+</form>
+
+</body>
+</html>
