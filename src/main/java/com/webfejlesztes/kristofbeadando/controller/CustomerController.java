@@ -21,6 +21,9 @@ public class CustomerController {
     public String addCustomer(@RequestParam String first,
                               @RequestParam String last,
                               @RequestParam Integer age) {
+        if (first.isEmpty() || last.isEmpty() || age < 6 || age > 99){
+            return "Please enter valid informations!";
+        }
         Customer customer = new Customer();
         customer.setFirstName(first);
         customer.setLastName(last);
@@ -43,8 +46,7 @@ public class CustomerController {
 
     @GetMapping("/list")
     public Iterable<Customer> getCustomers() {
-        //return customerRepository.findAll();
-        return customers;
+        return customerRepository.findAll();
     }
 
     @GetMapping("/find/{id}")
@@ -58,12 +60,16 @@ public class CustomerController {
                                        @RequestParam String first,
                                        @RequestParam String last,
                                        @RequestParam String age) {
+        Integer Age = Integer.parseInt(age);
+        if (first.isEmpty() || last.isEmpty() || Age < 6 || Age > 99){
+            return null;
+        }
         var customer = findCustomerById(id);
         customers.remove(id-1);
 
         customer.setFirstName(first);
         customer.setLastName(last);
-        customer.setAge(Integer.parseInt(age));
+        customer.setAge(Age);
         customerRepository.save(customer);
 
         customers.add(customer);
@@ -75,12 +81,16 @@ public class CustomerController {
                                        @RequestBody String last,
                                        @RequestBody String age)
     {
+        Integer Age = Integer.parseInt(age);
+        if (first.isEmpty() || last.isEmpty() || Age < 6 || Age > 99){
+            return null;
+        }
         var customer = findCustomerById(id);
         customers.remove(id-1);
 
         customer.setFirstName(first);
         customer.setLastName(last);
-        customer.setAge(Integer.parseInt(age));
+        customer.setAge(Age);
         customerRepository.save(customer);
 
         customers.add(customer);
