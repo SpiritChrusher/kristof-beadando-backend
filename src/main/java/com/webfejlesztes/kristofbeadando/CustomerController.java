@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class CustomerController {
     List<Customer> customers = new ArrayList<>();
 
@@ -21,6 +22,17 @@ public class CustomerController {
         customer.setFirstName(first);
         customer.setLastName(last);
         customer.setAge(age);
+        customerRepository.save(customer);
+        customers.add(customer);
+        return "Added new customer to repo!";
+    }
+
+    @PostMapping("/addjson")
+    public String addJsonCustomer(@RequestBody RequestCustomer requestCustomer)
+    {
+        Customer customer = new Customer(requestCustomer.getFirstName(),
+                requestCustomer.getLastName(),
+                requestCustomer.getAge());
         customerRepository.save(customer);
         customers.add(customer);
         return "Added new customer to repo!";
@@ -42,30 +54,33 @@ public class CustomerController {
     public Customer updateCustomerById(@RequestParam Integer id,
                                        @RequestParam String first,
                                        @RequestParam String last,
-                                       @RequestParam Integer age) {
+                                       @RequestParam String age) {
         var customer = findCustomerById(id);
-        var oldcustomer = customers.stream().filter(x -> x.getId() == id);
         customers.remove(id-1);
 
         customer.setFirstName(first);
         customer.setLastName(last);
-        customer.setAge(age);
+        customer.setAge(Integer.parseInt(age));
         customerRepository.save(customer);
 
         customers.add(customer);
         return customer;
     }
-    @PostMapping("/remove/{id:\\d+}")
-    public String deleteCustomerById(@PathVariable Integer id) {
-        //ustomerRepository.deleteCustomerById(id);
+    @PostMapping("/updatejson")
+    public Customer updateCustomerByIdJson(@RequestBody Integer id,
+                                       @RequestBody String first,
+                                       @RequestBody String last,
+                                       @RequestBody String age)
+    {
+        var customer = findCustomerById(id);
         customers.remove(id-1);
-        return "Removed item at index:" + id;
-    }
 
-    @PostMapping("/removeall")
-    public List<Customer> deleteAll() {
-        //customerRepository.deleteAll();
-        customers.removeAll(this.customers);
-        return customers;
+        customer.setFirstName(first);
+        customer.setLastName(last);
+        customer.setAge(Integer.parseInt(age));
+        customerRepository.save(customer);
+
+        customers.add(customer);
+        return customer;
     }
 }

@@ -8,6 +8,13 @@ import javax.persistence.Id;
 @Entity
 public class Customer {
 
+    public Customer(){}
+    public Customer(String _firstName, String _lastName, String _age){
+        this.firstName = _firstName;
+        this.lastName = _lastName;
+        this.Age = Integer.parseInt(_age);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -47,4 +54,7 @@ public class Customer {
     public void setAge(Integer age) {
         Age = age;
     }
+
+
 }
+

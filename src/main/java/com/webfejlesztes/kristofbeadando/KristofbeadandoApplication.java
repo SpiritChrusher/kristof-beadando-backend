@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class KristofbeadandoApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(KristofbeadandoApplication.class, args);
     }
 
