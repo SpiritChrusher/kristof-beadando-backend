@@ -1,4 +1,4 @@
-package com.webfejlesztes.kristofbeadando;
+package com.webfejlesztes.kristofbeadando.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

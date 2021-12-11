@@ -1,5 +1,8 @@
-package com.webfejlesztes.kristofbeadando;
+package com.webfejlesztes.kristofbeadando.controller;
 
+import com.webfejlesztes.kristofbeadando.models.Customer;
+import com.webfejlesztes.kristofbeadando.models.RequestCustomer;
+import com.webfejlesztes.kristofbeadando.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

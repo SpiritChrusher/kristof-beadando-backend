@@ -1,4 +1,4 @@
-package com.webfejlesztes.kristofbeadando;
+package com.webfejlesztes.kristofbeadando.models;
 
 public class RequestCustomer {
 
