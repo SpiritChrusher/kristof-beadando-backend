@@ -2,10 +2,13 @@ package com.webfejlesztes.kristofbeadando.controller;
 
 import com.webfejlesztes.kristofbeadando.models.Customer;
 import com.webfejlesztes.kristofbeadando.models.RequestCustomer;
+import com.webfejlesztes.kristofbeadando.models.UpdatedCustomer;
 import com.webfejlesztes.kristofbeadando.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +58,17 @@ public class CustomerController {
         return customerRepository.findCustomerById(id);
     }
 
+    @PostMapping("/find/{id}")
+    public Customer findCustomerById(@RequestBody String id) {
+        Integer Id = Integer.parseInt(id);
+
+        if (Id < 1){
+            return null;
+        }
+
+        return customerRepository.findCustomerById(Id-1);
+    }
+
     @PostMapping("/update")
     public Customer updateCustomerById(@RequestParam Integer id,
                                        @RequestParam String first,
@@ -76,24 +90,49 @@ public class CustomerController {
         return customer;
     }
     @PostMapping("/updatejson")
-    public Customer updateCustomerByIdJson(@RequestBody Integer id,
-                                       @RequestBody String first,
-                                       @RequestBody String last,
-                                       @RequestBody String age)
+    public Customer updateCustomerByIdJson(@RequestBody UpdatedCustomer updatedCustomer)
     {
-        Integer Age = Integer.parseInt(age);
-        if (first.isEmpty() || last.isEmpty() || Age < 6 || Age > 99){
+        Integer Age = Integer.parseInt(updatedCustomer.getAge());
+        Integer Id = Integer.parseInt(updatedCustomer.getId());
+        if (updatedCustomer.getFirstName().isEmpty() || updatedCustomer.getLastName().isEmpty() || Age < 6 || Age > 99 || Id < 1){
             return null;
         }
-        var customer = findCustomerById(id);
-        customers.remove(id-1);
+        var customer = findCustomerById(Id);
+        customers.remove(Id-1);
 
-        customer.setFirstName(first);
-        customer.setLastName(last);
+        customer.setId(Id);
+        customer.setFirstName(updatedCustomer.getFirstName());
+        customer.setLastName(updatedCustomer.getFirstName());
         customer.setAge(Age);
         customerRepository.save(customer);
 
         customers.add(customer);
         return customer;
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@RequestParam("id") String id){
+        Integer Id = Integer.parseInt(id);
+        if (Id < 1) {
+            return null;
+        }
+        customerRepository.deleteCustomerById(Id-1);
+        return "entity removed!";
+    }
+
+    @GetMapping("/deletejson")
+    public String deleteUserJson(@RequestBody String id){
+        Integer Id = Integer.parseInt(id);
+        if (Id < 1) {
+            return null;
+        }
+        customerRepository.deleteCustomerById(Id-1);
+        return "entity removed!";
+    }
+
+    @GetMapping("/deleteall")
+    public String deleteUser(){
+        customerRepository.deleteAll();
+        return "All entities removed!";
     }
 }
