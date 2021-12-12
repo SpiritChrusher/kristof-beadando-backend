@@ -7,8 +7,6 @@ import com.webfejlesztes.kristofbeadando.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,13 +50,17 @@ public class CustomerController {
         return customerRepository.findAll();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/find/{id}")
     public Customer findCustomerById(@RequestParam Integer id) {
+        if (id < 1)
+        {return null;}
 
         return customerRepository.findCustomerById(id);
     }
 
-    @PostMapping("/find/{id}")
+    @CrossOrigin(origins = "*")
+    @PostMapping("/findjson")
     public Customer findCustomerById(@RequestBody String id) {
         Integer Id = Integer.parseInt(id);
 
@@ -66,7 +68,7 @@ public class CustomerController {
             return null;
         }
 
-        return customerRepository.findCustomerById(Id-1);
+        return customerRepository.findCustomerById(Id);
     }
 
     @PostMapping("/update")
@@ -94,7 +96,9 @@ public class CustomerController {
     {
         Integer Age = Integer.parseInt(updatedCustomer.getAge());
         Integer Id = Integer.parseInt(updatedCustomer.getId());
-        if (updatedCustomer.getFirstName().isEmpty() || updatedCustomer.getLastName().isEmpty() || Age < 6 || Age > 99 || Id < 1){
+        if (updatedCustomer.getFirstName().isEmpty() ||
+                updatedCustomer.getLastName().isEmpty() || Age < 6
+                || Age > 99 || Id < 1){
             return null;
         }
         var customer = findCustomerById(Id);
@@ -110,23 +114,27 @@ public class CustomerController {
         return customer;
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/delete/{id}")
+    @Transactional
     public String deleteUser(@RequestParam("id") String id){
         Integer Id = Integer.parseInt(id);
         if (Id < 1) {
             return null;
         }
-        customerRepository.deleteCustomerById(Id-1);
+        customerRepository.deleteCustomerById(Id);
         return "entity removed!";
     }
 
-    @GetMapping("/deletejson")
+    @CrossOrigin(origins = "*")
+    @PostMapping("/deletejson")
+    @Transactional
     public String deleteUserJson(@RequestBody String id){
         Integer Id = Integer.parseInt(id);
         if (Id < 1) {
             return null;
         }
-        customerRepository.deleteCustomerById(Id-1);
+        customerRepository.deleteCustomerById(Id);
         return "entity removed!";
     }
 
